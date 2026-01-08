@@ -10,10 +10,10 @@ import os
 # Example input: 205/60R15
 # formula v = ((pi*(w**2)a)*((w*a)+(2540*d)))/10000000000
 
-directory = r"C:/Users/mcgeh/Desktop/VSCode Files/CSE111/wk_01"
+script_dir = os.path.dirname(os.path.abspath(__file__))
 filename = "volumes.txt"
-full_path = os.path.join(directory, filename)
-os.makedirs(directory, exist_ok=True)
+full_path = os.path.join(script_dir, filename)
+
 today_date = datetime.date.today()
 
 tire_width = int(input('Enter the width of the tire in mm (ex 205): '))
@@ -35,4 +35,3 @@ if user_buy == "Y":
 else:
     with open(full_path, "at") as volumes_file:
         print(today_date, tire_width, aspect_ratio, wheel_diameter, tire_volume, sep=", ", end="\n", file=volumes_file, flush=True)
-
