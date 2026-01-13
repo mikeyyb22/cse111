@@ -1,14 +1,12 @@
 # Enhancement: The program now provides detailed feedback explaining
-# which specific requirements a password fails (uppercase, digits,
+# which specific requirements a password lacks (uppercase, digits,
 # special characters), helping users improve weak passwords.
 
 # Enhancement: Password input is hidden using getpass to prevent
 # shoulder-surfing and improve security.
 
-# Enhancement: Added password strength categories (Weak, Medium, Strong)
-# based on the calculated strength score to make results clearer.
-
 import os
+import getpass
 
 LOWER=["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
 UPPER=["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
@@ -20,7 +18,7 @@ def main():
     strength = 0
 
     while user_input == True:
-        user_password = input('Input password to test: ')
+        user_password = getpass.getpass('Input password to test: ')
         if user_password == 'q' or user_password == 'Q':
             user_input = False
         else:
@@ -59,18 +57,26 @@ def word_complexity(word):
     has_lower = word_has_character(word, LOWER)
     if has_lower == True:
         complexity_score += 1
+    else:
+        print(f'Password could be stronger. Try adding a lowercase letter.')
 
     has_upper = word_has_character(word, UPPER)
     if has_upper == True:
         complexity_score += 1
+    else:
+        print(f'Password could be stronger. Try adding an uppercase letter.')
 
     has_digits = word_has_character(word, DIGITS)
     if has_digits == True:
         complexity_score += 1
+    else:
+        print(f'Password could be stronger. Try adding a number.')
 
     has_special = word_has_character(word, SPECIAL)
     if has_special == True:
         complexity_score += 1
+    else:
+        print(f'Password could be stronger. Try adding a special character (i.e. \"!,\" \"?\" or \"$\").')
 
     return complexity_score
 
