@@ -1,3 +1,13 @@
+# Enhancement: The program now provides detailed feedback explaining
+# which specific requirements a password fails (uppercase, digits,
+# special characters), helping users improve weak passwords.
+
+# Enhancement: Password input is hidden using getpass to prevent
+# shoulder-surfing and improve security.
+
+# Enhancement: Added password strength categories (Weak, Medium, Strong)
+# based on the calculated strength score to make results clearer.
+
 import os
 
 LOWER=["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
