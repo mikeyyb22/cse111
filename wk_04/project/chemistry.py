@@ -1,6 +1,8 @@
 """
 Enhancements:
-
+Made function make_uppercase, so if someone types "o" for Oxygen,
+the function will change it to "O" so that formula.py can find 
+the right information
 """
 
 from formula import parse_formula
