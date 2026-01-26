@@ -1,9 +1,6 @@
 """
-Requirements:
-Ask the user for a chemical formula.
-Ask the user for the amount of the compound in grams (this is the sample_mass).
-Compute and display the molar mass.
-Compute and display the number of moles.
+Enhancements:
+
 """
 
 from formula import parse_formula
@@ -25,11 +22,13 @@ def main():
 
 def make_uppercase(formula):
     char_list = list(formula)
-    for char in char_list:
-        if char.islower() == True:
-            char = char.upper()
+    for i, char in enumerate(char_list):
+        if char.islower() == True and char_list[i - 1].isalpha() == False:
+            char_list[i] = char.upper()
+            
+    updated_string = "".join(char_list)
 
-    return "".join(char_list)
+    return updated_string
 
             
 
