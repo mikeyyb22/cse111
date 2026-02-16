@@ -1,9 +1,9 @@
-planet,name,mass,planet_distance
-earth,moon,0.0123,0.00257
+planet,name,mass,distance
+earth,moon,0.0123,0.00257,1737.4
 jupiter,ganymede,0.025,0.00715
 saturn,titan,0.0225,0.00816
 jupiter,callisto,0.018,0.0126
 jupiter,io,0.015,0.00282
 jupiter,europa,0.008,0.00449
 neptune,triton,0.0036,0.00237
-pluto,charon,0.0003,0.00013
+pluto,charon,0.000254,0.00013
