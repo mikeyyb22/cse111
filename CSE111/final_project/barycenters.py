@@ -99,7 +99,14 @@ def main():
 
                 print(moon_r1)
             else:
-                print(f"Not found!")
+                moon_1 = create_body(moon_input)
+                planet_name = input(f"What planet does {moon_1["name"]} orbit? ").lower()
+                planet_1 = get_body(planet_name, celestial_bodies)
+                planet_1["distance"] = 0
+                moon_r1 = calculate_r1(moon_1, planet_1)
+
+                print(moon_r1)
+
         else:
             program_run = False
             
@@ -162,7 +169,7 @@ def create_body(user_input):
     if create_planet == "Y":
         create_name = user_input
         create_mass = input(f"Input mass of {create_name} in Earth mass: ")
-        create_distance = input(f"Input distance of {create_name} from the sun in AU: ")
+        create_distance = input(f"Input distance of {create_name} from the sun (or planet, if you are creating a moon) in AU: ")
         new_dict = {"name": create_name, "mass": create_mass, "distance": create_distance}
         return new_dict
     else:
