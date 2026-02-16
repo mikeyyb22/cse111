@@ -1,0 +1,35 @@
+CSE 111 Proposal for a Student Chosen Program
+
+    (This is a proposal. All proposals are written with our best
+    knowledge at the beginning of a project. As we progress from the
+    beginning to the end of a project, we gain more knowledge, and we
+    change some of our proposed ideas. This is part of completing any
+    project and is fine.  However, we still must write a proposal so
+    that our teachers or supervisors know what we intend to do. Please
+    answer each of the following questions to the best of your
+    knowledge.)
+
+1. What is the title of your program? 
+    Baricenters Visualized 
+
+2. What real-world problem will your program address or help to solve?
+    Help to explain and visualize barycenters in the Solar System
+
+3. What will you learn from developing this program?
+    The Two-body problem, how to build a GUI
+
+4. What Python modules will your program use?
+    math, tkinter
+
+5. List the names of functions you will need?
+    main()
+    file_to_dict(filename, index)
+    calc_barycenter(body_one, body_two)
+    create_body(mass, au)
+
+    + whatever functions may be needed to show GUI
+
+6. List the names of the test functions you will write.
+    test_file_to_dict()
+    test_calc_barycenter()
+    test_create_body()

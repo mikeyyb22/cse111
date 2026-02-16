@@ -1,0 +1,11 @@
+name,mass(divided by 10^24 kg),distance(au)
+sol,1989000,0
+mercury,0.330104,0.39
+venus,4.86732,0.723
+earth,5.97219,1
+mars,0.641693,1.52
+jupiter,1898.13,5.20
+saturn,568.319,9.58
+uranus,86.8103,19.2
+neptune,102.41,30.1
+pluto,0.01309,39.5
