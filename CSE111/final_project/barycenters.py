@@ -2,7 +2,6 @@
 # DISTANCE is measured in AU (Astronomical Units)
 # RADIUS is measured in km
 
-import tkinter as tk
 import csv
 import os
 
