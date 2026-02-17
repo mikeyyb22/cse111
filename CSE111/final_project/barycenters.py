@@ -4,6 +4,7 @@
 
 import csv
 import os
+import sys
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 celestial_bodies_filename = "celestial_bodies.csv"
@@ -54,6 +55,9 @@ def main():
                 planet_1 = get_body(moon_1["planet"], celestial_bodies)
                 temp_distance = planet_1["distance"]
                 planet_1["distance"] = 0
+                print()
+                print(type(planet_err).__name__, planet_err, sep=": ")
+                print(f"{moon_1["name"]} does not orbit a planet that exists. Try again.")
                 moon_r1 = calculate_r1(moon_1, planet_1)
                 moon_r1 = round(moon_r1, 2)
                 planet_1["distance"] = temp_distance
@@ -69,8 +73,14 @@ def main():
                     continue
                 planet_name = input(f"What planet does {moon_1["name"]} orbit? ").lower()
                 planet_1 = get_body(planet_name, celestial_bodies)
-                temp_distance = planet_1["distance"]
-                planet_1["distance"] = 0
+                try:
+                    temp_distance = planet_1["distance"]
+                    planet_1["distance"] = 0
+                except KeyError as planet_err:
+                    print()
+                    print(type(planet_err).__name__, planet_err, sep=": ")
+                    print(f"{moon_1["name"]} does not orbit a planet that exists. Try again.")
+                    sys.exit()
                 moon_r1 = calculate_r1(moon_1, planet_1)
                 moon_r1 = round(moon_r1, 2)
                 planet_1["distance"] = temp_distance
@@ -104,14 +114,21 @@ def read_moons_from_csv():
 
 def calculate_r1(small_body, large_body):
     r1 = 0.0
-    m1 = float(large_body["mass"])
-    m2 = float(small_body["mass"])
-    d1 = float(large_body["distance"])
-    d2 = float(small_body["distance"])
-    a = abs(d2 - d1)
-    r1 = a / (1 + (m1 / m2))
-    r1 = au_to_km(r1)
-    return r1
+    try:
+        m1 = float(large_body["mass"])
+        m2 = float(small_body["mass"])
+        d1 = float(large_body["distance"])
+        d2 = float(small_body["distance"])
+        a = abs(d2 - d1)
+        r1 = a / (1 + (m1 / m2))
+        r1 = au_to_km(r1)
+        return r1
+    except ValueError as num_err:
+        print()
+        print(type(num_err).__name__, num_err, sep=": ")
+        print(f"You must enter an integer or float for mass and distance of {small_body["name"]}")
+        sys.exit()
+
 
 def au_to_km(distance):
     return distance * 149600000
