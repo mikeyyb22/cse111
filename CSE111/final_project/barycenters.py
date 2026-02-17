@@ -26,7 +26,7 @@ def main():
         user_input = input()
 
         if user_input == "1":
-            body_input = input(f"Enter name of planet: ").lower()
+            body_input = input(f"Enter name of planet: ").capitalize()
             body_found = find_body(body_input, celestial_bodies)
             if body_found == True:
                 planet = get_body(body_input, celestial_bodies)
@@ -41,6 +41,7 @@ def main():
                 if planet == None:
                     continue
                 else:
+                    celestial_bodies.append(planet)
                     r1 = calculate_r1(planet, the_sun)
                     r1 = round(r1, 2)
                     print(f"The barycenter between {planet["name"]} and the sun is {r1}km from the center of the sun.")
@@ -48,7 +49,7 @@ def main():
                     continue
 
         if user_input == "2":
-            moon_input = input(f"Please enter the name of the moon: ").lower()
+            moon_input = input(f"Please enter the name of the moon: ").capitalize()
             moon_found = find_body(moon_input, moons)
             if moon_found == True:
                 moon_1 = get_body(moon_input, moons)
@@ -71,26 +72,27 @@ def main():
                 moon_1 = create_body(moon_input)
                 if moon_1 == None:
                     continue
-                planet_name = input(f"What planet does {moon_1["name"]} orbit? ").lower()
-                planet_1 = get_body(planet_name, celestial_bodies)
-                try:
-                    temp_distance = planet_1["distance"]
-                    planet_1["distance"] = 0
-                except KeyError as planet_err:
-                    print()
-                    print(type(planet_err).__name__, planet_err, sep=": ")
-                    print(f"{moon_1["name"]} does not orbit a planet that exists. Try again.")
-                    sys.exit()
-                moon_r1 = calculate_r1(moon_1, planet_1)
-                moon_r1 = round(moon_r1, 2)
-                planet_1["distance"] = temp_distance
-                print(f"The barycenter between {moon_1["name"]} and {planet_1["name"]} is {moon_r1:.2f}km from the center of {planet_1["name"]}.")
-                outside_radius(planet_1, moon_r1)
-                rH = hill_sphere(the_sun, planet_1)
-                rH = round(rH, 2)
-                calc_influence(rH, planet_1, moon_1)
-                continue
-
+                else:
+                    moons.append(moon_1)
+                    planet_name = input(f"What planet does {moon_1["name"]} orbit? ").capitalize()
+                    planet_1 = get_body(planet_name, celestial_bodies)
+                    try:
+                        temp_distance = planet_1["distance"]
+                        planet_1["distance"] = 0
+                    except KeyError as planet_err:
+                        print()
+                        print(type(planet_err).__name__, planet_err, sep=": ")
+                        print(f"{moon_1["name"]} does not orbit a planet that exists. Try again.")
+                        sys.exit()
+                    moon_r1 = calculate_r1(moon_1, planet_1)
+                    moon_r1 = round(moon_r1, 2)
+                    planet_1["distance"] = temp_distance
+                    print(f"The barycenter between {moon_1["name"]} and {planet_1["name"]} is {moon_r1:.2f}km from the center of {planet_1["name"]}.")
+                    outside_radius(planet_1, moon_r1)
+                    rH = hill_sphere(the_sun, planet_1)
+                    rH = round(rH, 2)
+                    calc_influence(rH, planet_1, moon_1)
+                    continue
         else:
             program_run = False
             
@@ -184,7 +186,8 @@ def create_body(user_input):
         create_name = user_input
         create_mass = input(f"Input mass of {create_name} in Earth mass: ")
         create_distance = input(f"Input distance of {create_name} from the sun (or planet, if you are creating a moon) in AU: ")
-        new_dict = {"name": create_name, "mass": create_mass, "distance": create_distance}
+        create_radius = input(f"Input radius of {create_name} in kilometers: (If moon, enter \'0\')")
+        new_dict = {"name": create_name, "mass": create_mass, "distance": create_distance, "radius": create_radius}
         return new_dict
     else:
         return None
