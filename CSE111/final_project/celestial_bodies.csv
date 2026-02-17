@@ -1,5 +1,5 @@
 name,mass,distance,radius
-sol,332946.049,0,695700
+sun,332946.049,0,695700
 mercury,0.055,0.39,2439.7
 venus,0.815,0.72,6051.8
 earth,1,1,6371

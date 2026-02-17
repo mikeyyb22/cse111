@@ -1,5 +1,5 @@
 planet,name,mass,distance
-earth,moon,0.0123,0.00257,1737.4
+earth,moon,0.0123,0.00257
 jupiter,ganymede,0.025,0.00715
 saturn,titan,0.0225,0.00816
 jupiter,callisto,0.018,0.0126

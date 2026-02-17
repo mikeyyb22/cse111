@@ -14,105 +14,72 @@ celestial_bodies_full_path = os.path.join(script_dir, celestial_bodies_filename)
 moons_filename = "moons.csv"
 moons_full_path = os.path.join(script_dir, moons_filename)
 
-# PLANET_INDEX = 0
-# MOON_INDEX = 1
+SOL_INDEX = 0
 
 def main():
     celestial_bodies = read_celestial_bodies_from_csv()
     moons = read_moons_from_csv()
     program_run = True
+    the_sun = celestial_bodies[SOL_INDEX]
 
     while program_run == True:
         print(f"Choose an option below:\n1. Planet in relation to sun or another planet\n2. Moon in relation to planet\n3. Quit")
-        body_input = input()
+        user_input = input()
 
-        if body_input == "1":
-            first_body_input = input(f"Enter name of first body: ").lower()
-            second_body_input = input(f"Enter name of second body: ").lower()
-            input_one_found = find_body(first_body_input, celestial_bodies)
-            input_two_found = find_body(second_body_input, celestial_bodies)
-            if input_one_found == True:
-                first_body = get_body(first_body_input, celestial_bodies)
-                first_body_mass = float(first_body["mass"])
-                if input_two_found == True:
-                    second_body = get_body(second_body_input, celestial_bodies)
-                    second_body_mass = float(second_body["mass"])
-                    if first_body_mass < second_body_mass:
-                        larger_body = second_body
-                        smaller_body = first_body
-                    else:
-                        larger_body = first_body
-                        smaller_body = second_body
-                    r1 = calculate_r1(smaller_body, larger_body)
-                    print(f"The barycenter between {smaller_body["name"]} and {larger_body["name"]} is {r1:.2f}km from the center of {larger_body["name"]}.")
-                else:
-                    second_body = create_body(second_body_input)
-                    if second_body == None:
-                        continue
-                    second_body_mass = float(second_body["mass"])
-                    if first_body_mass < second_body_mass:
-                        larger_body = second_body
-                        smaller_body = first_body
-                    else:
-                        larger_body = first_body
-                        smaller_body = second_body
-                    r1 = calculate_r1(smaller_body, larger_body)
-                    print(f"The barycenter between {smaller_body["name"]} and {larger_body["name"]} is {r1:.2f}km from the center of {larger_body["name"]}.")
+        if user_input == "1":
+            body_input = input(f"Enter name of planet: ").lower()
+            body_found = find_body(body_input, celestial_bodies)
+            if body_found == True:
+                planet = get_body(body_input, celestial_bodies)
+                r1 = calculate_r1(planet, the_sun)
+                print(f"The barycenter between {planet["name"]} and the sun is {r1}km from the center of the sun.")
+                outside_radius(the_sun, r1)
+                continue
+
             else:
-                first_body = create_body(first_body_input)
-                if first_body == None:
+                planet = create_body(body_input)
+                if planet == None:
                     continue
-                first_body_mass = float(first_body["mass"])
-                if input_two_found == True:
-                    second_body = get_body(second_body_input, celestial_bodies)
-                    second_body_mass = float(second_body["mass"])
-                    if first_body_mass < second_body_mass:
-                        larger_body = second_body
-                        smaller_body = first_body
-                    else:
-                        larger_body = first_body
-                        smaller_body = second_body
-                    r1 = calculate_r1(smaller_body, larger_body)
-                    print(f"The barycenter between {smaller_body["name"]} and {larger_body["name"]} is {r1:.2f}km from the center of {larger_body["name"]}.")
                 else:
-                    second_body = create_body(second_body_input)
-                    if second_body == None:
-                        continue
-                    second_body_mass = float(second_body["mass"])
-                    if first_body_mass < second_body_mass:
-                        larger_body = second_body
-                        smaller_body = first_body
-                    else:
-                        larger_body = first_body
-                        smaller_body = second_body
-                    r1 = calculate_r1(smaller_body, larger_body)
-                    print(f"The barycenter between {smaller_body["name"]} and {larger_body["name"]} is {r1:.2f}km from the center of {larger_body["name"]}.")
+                    r1 = calculate_r1(planet, the_sun)
+                    print(f"The barycenter between {planet["name"]} and the sun is {r1}km from the center of the sun.")
+                    outside_radius(the_sun, r1)
+                    continue
 
-        if body_input == "2":
+        if user_input == "2":
             moon_input = input(f"Please enter the name of the moon: ").lower()
             moon_found = find_body(moon_input, moons)
             if moon_found == True:
                 moon_1 = get_body(moon_input, moons)
                 planet_1 = get_body(moon_1["planet"], celestial_bodies)
+                temp_distance = planet_1["distance"]
                 planet_1["distance"] = 0
                 moon_r1 = calculate_r1(moon_1, planet_1)
-
-                print(moon_r1)
+                planet_1["distance"] = temp_distance
+                print(f"The barycenter between {moon_1["name"]} and {planet_1["name"]} is {moon_r1:.2f}km from the center of {planet_1["name"]}.")
+                outside_radius(planet_1, moon_r1)
+                rH = hill_sphere(the_sun, planet_1)
+                calc_influence(rH, planet_1, moon_1)
+                continue
             else:
                 moon_1 = create_body(moon_input)
+                if moon_1 == None:
+                    continue
                 planet_name = input(f"What planet does {moon_1["name"]} orbit? ").lower()
                 planet_1 = get_body(planet_name, celestial_bodies)
+                temp_distance = planet_1["distance"]
                 planet_1["distance"] = 0
                 moon_r1 = calculate_r1(moon_1, planet_1)
-
-                print(moon_r1)
+                planet_1["distance"] = temp_distance
+                print(f"The barycenter between {moon_1["name"]} and {planet_1["name"]} is {moon_r1:.2f}km from the center of {planet_1["name"]}.")
+                outside_radius(planet_1, moon_r1)
+                rH = hill_sphere(the_sun, planet_1)
+                calc_influence(rH, planet_1, moon_1)
+                continue
 
         else:
             program_run = False
             
-
-
-
 def read_celestial_bodies_from_csv():
     bodies = []
 
@@ -137,7 +104,7 @@ def calculate_r1(small_body, large_body):
     m2 = float(small_body["mass"])
     d1 = float(large_body["distance"])
     d2 = float(small_body["distance"])
-    a = d2 - d1
+    a = abs(d2 - d1)
     r1 = a / (1 + (m1 / m2))
     r1 = au_to_km(r1)
     return r1
@@ -145,15 +112,40 @@ def calculate_r1(small_body, large_body):
 def au_to_km(distance):
     return distance * 149600000
 
-def hill_sphere(first_body, second_body):
-    return
+def hill_sphere(sol, planet):
+    m1 = float(sol["mass"])
+    m2 = float(planet["mass"])
+    a = float(planet["distance"])
+    a = au_to_km(a)
+    rH = a * ((m1/(3 * m2)) ** (1/3))
+    return rH
+    
+def calc_influence(hill_sphere, planet, moon):
+    a = float(moon["distance"])
+    m1 = float(planet["mass"])
+    m2 = float(moon["mass"])
+
+    if a <= hill_sphere:
+        if m2 > m1:
+            print(f"You created a moon that is larger than the planet it is supposed to orbit. Therefore, {planet["name"]} actually has started to orbit {moon["name"]}. Nice.")
+            return False
+        print(f"{moon["name"]} is within the Hill Sphere of {planet["name"]}. The barycenter between the two bodies is \'meaningful\' and {moon["name"]} orbits {planet["name"]}.")
+    else:
+        print(f"{moon["name"]} is not within the Hill Sphere of {planet["name"]}. The barycenter of the two objects is mathematical and has little to no effect on either body. {moon["name"]} orbits the sun.")
+    return True
+
+def outside_radius(large_body, r1):
+    radius = float(large_body["radius"])
+    if r1 > radius:
+        print(f"The barycenter lies outside of {large_body["name"]}!")
+        return True
+    return False
 
 def find_body(body, bodies):
     input_found = False
     for planet in bodies:
             if body in planet.values():
                 input_found = True
-                body_dict = body
     return input_found
 
 def get_body(body, bodies):
@@ -173,7 +165,7 @@ def create_body(user_input):
         new_dict = {"name": create_name, "mass": create_mass, "distance": create_distance}
         return new_dict
     else:
-        return
+        return None
 
 if __name__ == "__main__":
     main()
