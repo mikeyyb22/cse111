@@ -2,7 +2,6 @@
 # DISTANCE is measured in AU (Astronomical Units)
 # RADIUS is measured in km
 
-import math
 import tkinter as tk
 import csv
 import os
@@ -23,7 +22,7 @@ def main():
     the_sun = celestial_bodies[SOL_INDEX]
 
     while program_run == True:
-        print(f"Choose an option below:\n1. Planet in relation to sun or another planet\n2. Moon in relation to planet\n3. Quit")
+        print(f"Choose an option below:\n1. Planet in relation to sun\n2. Moon in relation to planet\n3. Quit")
         user_input = input()
 
         if user_input == "1":
@@ -32,6 +31,7 @@ def main():
             if body_found == True:
                 planet = get_body(body_input, celestial_bodies)
                 r1 = calculate_r1(planet, the_sun)
+                r1 = round(r1, 2)
                 print(f"The barycenter between {planet["name"]} and the sun is {r1}km from the center of the sun.")
                 outside_radius(the_sun, r1)
                 continue
@@ -42,6 +42,7 @@ def main():
                     continue
                 else:
                     r1 = calculate_r1(planet, the_sun)
+                    r1 = round(r1, 2)
                     print(f"The barycenter between {planet["name"]} and the sun is {r1}km from the center of the sun.")
                     outside_radius(the_sun, r1)
                     continue
@@ -55,6 +56,7 @@ def main():
                 temp_distance = planet_1["distance"]
                 planet_1["distance"] = 0
                 moon_r1 = calculate_r1(moon_1, planet_1)
+                moon_r1 = round(moon_r1, 2)
                 planet_1["distance"] = temp_distance
                 print(f"The barycenter between {moon_1["name"]} and {planet_1["name"]} is {moon_r1:.2f}km from the center of {planet_1["name"]}.")
                 outside_radius(planet_1, moon_r1)
@@ -70,6 +72,7 @@ def main():
                 temp_distance = planet_1["distance"]
                 planet_1["distance"] = 0
                 moon_r1 = calculate_r1(moon_1, planet_1)
+                moon_r1 = round(moon_r1, 2)
                 planet_1["distance"] = temp_distance
                 print(f"The barycenter between {moon_1["name"]} and {planet_1["name"]} is {moon_r1:.2f}km from the center of {planet_1["name"]}.")
                 outside_radius(planet_1, moon_r1)
@@ -118,6 +121,7 @@ def hill_sphere(sol, planet):
     a = float(planet["distance"])
     a = au_to_km(a)
     rH = a * ((m1/(3 * m2)) ** (1/3))
+    rH = round(rH, 2)
     return rH
     
 def calc_influence(hill_sphere, planet, moon):
