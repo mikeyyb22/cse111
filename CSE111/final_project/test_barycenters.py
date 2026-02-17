@@ -11,6 +11,11 @@ def test_calculate_r1():
     assert calculate_r1({"name": "A", "mass": "1", "distance": "0", "radius": "0"}, {"name": "sun", "mass": "332946.049", "distance": "0", "radius": "695700"}) == pytest.approx(0, rel=None, abs=1e-6)
     assert calculate_r1({"name": "moon", "mass": "0.0123", "distance": "0.00257"}, {"name": "earth", "mass": "1", "distance": "0", "radius": "6371"}) == pytest.approx(4671.545589, rel=None, abs=1e-6)
 
+def test_hill_sphere():
+    assert hill_sphere({"name": "sun", "mass": "332946.049", "distance": "0", "radius": "695700"}, {"name": "mercury", "mass": "0.055", "distance": "0.39", "radius": "2439.7"}) == pytest.approx(221965.455428, rel=None, abs=1e-6)
+    assert hill_sphere({"name": "sun", "mass": "332946.049", "distance": "0", "radius": "695700"}, {"name": "earth", "mass": "1", "distance": "1", "radius": "6371"}) == pytest.approx(1496579.826536, rel=None, abs=1e-6)
+    assert hill_sphere({"name": "sun", "mass": "332946.049", "distance": "0", "radius": "695700"}, {"name": "A", "mass": "1", "distance": "0", "radius": "0"}) == pytest.approx(0, rel=None, abs=1e-6)
+
 
 
 

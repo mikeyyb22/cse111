@@ -61,6 +61,7 @@ def main():
                 print(f"The barycenter between {moon_1["name"]} and {planet_1["name"]} is {moon_r1:.2f}km from the center of {planet_1["name"]}.")
                 outside_radius(planet_1, moon_r1)
                 rH = hill_sphere(the_sun, planet_1)
+                rH = round(rH, 2)
                 calc_influence(rH, planet_1, moon_1)
                 continue
             else:
@@ -77,6 +78,7 @@ def main():
                 print(f"The barycenter between {moon_1["name"]} and {planet_1["name"]} is {moon_r1:.2f}km from the center of {planet_1["name"]}.")
                 outside_radius(planet_1, moon_r1)
                 rH = hill_sphere(the_sun, planet_1)
+                rH = round(rH, 2)
                 calc_influence(rH, planet_1, moon_1)
                 continue
 
@@ -115,17 +117,17 @@ def calculate_r1(small_body, large_body):
 def au_to_km(distance):
     return distance * 149600000
 
-def hill_sphere(sol, planet):
-    m1 = float(sol["mass"])
+def hill_sphere(sun, planet):
+    m1 = float(sun["mass"])
     m2 = float(planet["mass"])
     a = float(planet["distance"])
-    a = au_to_km(a)
-    rH = a * ((m1/(3 * m2)) ** (1/3))
-    rH = round(rH, 2)
+    rH = a * ((m2/(3 * m1)) ** (1/3))
+    rH = au_to_km(rH)
     return rH
     
 def calc_influence(hill_sphere, planet, moon):
     a = float(moon["distance"])
+    a = au_to_km(a)
     m1 = float(planet["mass"])
     m2 = float(moon["mass"])
 
@@ -135,7 +137,7 @@ def calc_influence(hill_sphere, planet, moon):
             return False
         print(f"{moon["name"]} is within the Hill Sphere of {planet["name"]}. The barycenter between the two bodies is \'meaningful\' and {moon["name"]} orbits {planet["name"]}.")
     else:
-        print(f"{moon["name"]} is not within the Hill Sphere of {planet["name"]}. The barycenter of the two objects is mathematical and has little to no effect on either body. {moon["name"]} orbits the sun.")
+        print(f"{moon["name"]} is {a}km away from {planet["name"]}, so it is not within the Hill Sphere of {planet["name"]}. The barycenter of the two objects is mathematical and has little to no effect on either body. {moon["name"]} orbits the sun.")
     return True
 
 def outside_radius(large_body, r1):
